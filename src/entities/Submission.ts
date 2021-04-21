@@ -14,6 +14,7 @@ export class Submission {
   @PrimaryKey()
   _id!: number;
 
+  @Property()
   id!: string;
 
   @Property()

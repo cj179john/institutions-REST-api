@@ -18,13 +18,14 @@ export class DataAccessImpl implements DataAccess {
   public async findBySubject(where: {
     [key: string]: string;
   }): Promise<Institution[]> {
-    const qb = this.em.createQueryBuilder(Institution, 'e');
+    const qb = this.em.createQueryBuilder(Institution, 'i');
 
     const query = qb
-      .select('*')
-      .leftJoin('e.submissions', 'es')
-      .leftJoin('es.subjects', 'ess')
-      .where(where);
+      .select('i.name')
+      .leftJoin('i.submissions', 's')
+      .leftJoin('s.subjects', 's2')
+      .where('s2.name = ?', [where.subject])
+      .groupBy('i.name, s2.name');
 
     return await query.execute<Institution[]>();
   }

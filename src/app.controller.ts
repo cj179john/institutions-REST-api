@@ -12,7 +12,7 @@ export class AppController {
     return result;
   }
 
-  @Get('/institutions/subject/:subject')
+  @Get('/institutions/subjects/:subject')
   public async getInstitutionsBySubject(
     @Param('subject') subject: string,
   ): Promise<Institution[]> {
