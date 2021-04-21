@@ -5,7 +5,6 @@ import {
   OneToMany,
   PrimaryKey,
   Property,
-  Unique,
 } from '@mikro-orm/core';
 import { Institution } from './Institution';
 import { Subject } from './Subject';
@@ -15,7 +14,6 @@ export class Submission {
   @PrimaryKey()
   _id!: number;
 
-  @Unique()
   id!: string;
 
   @Property()
@@ -40,9 +38,9 @@ export class Submission {
   institutionIncome: number;
 
   @Property()
-  InstitutionId: number;
+  InstitutionId: string;
 
-  @OneToMany(() => Subject, (subject) => subject.name)
+  @OneToMany(() => Subject, (subject) => subject._id)
   subjects = new Collection<Subject>(this);
 
   @ManyToOne(() => Institution, { nullable: true })

@@ -6,7 +6,7 @@ import { Institution } from './entities/Institution';
 export class AppController {
   constructor(private readonly appService: AppServiceImpl) {}
 
-  @Get()
+  @Get('/institutions')
   public async getInstitutions(): Promise<Institution[]> {
     const result = this.appService.findAllInstitutions();
     return result;
