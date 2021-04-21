@@ -40,7 +40,7 @@ export class Submission {
   @Property()
   InstitutionId: string;
 
-  @OneToMany(() => Subject, (subject) => subject._id)
+  @OneToMany(() => Subject, (subject) => subject.submission)
   subjects = new Collection<Subject>(this);
 
   @ManyToOne(() => Institution, { nullable: true })

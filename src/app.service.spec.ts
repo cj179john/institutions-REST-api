@@ -4,7 +4,7 @@ import { DataAccessImpl } from './dataAccess.service';
 
 describe('App Service', () => {
   let appService: AppService;
-  let dataAccess: DataAccessImpl<unknown>;
+  let dataAccess: DataAccessImpl;
   let findAllMock: jest.Mock;
   let mockDataAccess: jest.Mock;
 
@@ -26,7 +26,7 @@ describe('App Service', () => {
     }).compile();
 
     appService = module.get<AppServiceImpl>(AppServiceImpl);
-    dataAccess = module.get<DataAccessImpl<unknown>>(DataAccessImpl);
+    dataAccess = module.get<DataAccessImpl>(DataAccessImpl);
   });
 
   it('should find all institutions', async () => {
@@ -37,7 +37,7 @@ describe('App Service', () => {
     const results = await appService.findAllInstitutions();
 
     // Assert
-    expect(dataAccess.findAll).toBeCalledWith('Institution');
+    expect(dataAccess.findAll).toBeCalled();
     expect(results).toEqual([]);
   });
 });

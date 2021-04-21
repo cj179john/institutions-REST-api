@@ -14,6 +14,7 @@ export class Institution {
   _id!: number;
 
   @Unique()
+  @Property()
   id!: string;
 
   @Property()
@@ -28,7 +29,7 @@ export class Institution {
   @Property()
   region: string;
 
-  @OneToMany(() => Submission, (submission) => submission.InstitutionId)
+  @OneToMany(() => Submission, (submission) => submission.institution)
   submissions = new Collection<Submission>(this);
 
   constructor(institution: Institution) {

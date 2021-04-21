@@ -7,9 +7,10 @@ const DataModule = MikroOrmModule.forRoot({
   entities: [Institution, Submission, Subject],
   entitiesTs: ['./src/entities'],
   type: 'postgresql',
-  dbName: 'institution-data',
+  dbName: 'postgres',
   host: 'localhost',
   port: 5432,
+  password: process.env.PG_PASSWORD || 'mysecretpassword',
 });
 
 export default DataModule;

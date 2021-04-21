@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { AppServiceImpl } from './app.service';
 import { Institution } from './entities/Institution';
 
@@ -9,6 +9,14 @@ export class AppController {
   @Get('/institutions')
   public async getInstitutions(): Promise<Institution[]> {
     const result = this.appService.findAllInstitutions();
+    return result;
+  }
+
+  @Get('/institutions/subject/:subject')
+  public async getInstitutionsBySubject(
+    @Param('subject') subject: string,
+  ): Promise<Institution[]> {
+    const result = this.appService.findInstitutionBySubject(subject);
     return result;
   }
 }

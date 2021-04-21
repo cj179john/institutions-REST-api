@@ -1,25 +1,24 @@
-import { EntityName } from '@mikro-orm/core';
 import { EntityManager } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
+import { Institution } from './entities/Institution';
 
-export interface DataAccess<T> {
-  findAll(entity: string): Promise<T[]>;
-  findBy(entity: string, where: { [key: string]: string }): Promise<T[]>;
+export interface DataAccess {
+  findAll(entity: string): Promise<Institution[]>;
+  findBySubject(where: { [key: string]: string }): Promise<Institution[]>;
 }
 
 @Injectable()
-export class DataAccessImpl<T> implements DataAccess<T> {
+export class DataAccessImpl implements DataAccess {
   constructor(private readonly em: EntityManager) {}
 
-  public async findAll(entity: string): Promise<T[]> {
-    return await this.em.find<T>(entity, {});
+  public async findAll(): Promise<Institution[]> {
+    return await this.em.find(Institution, {});
   }
 
-  public async findBy(
-    entity: EntityName<T>,
-    where: { [key: string]: string },
-  ): Promise<T[]> {
-    const qb = this.em.createQueryBuilder<T>(entity, 'e');
+  public async findBySubject(where: {
+    [key: string]: string;
+  }): Promise<Institution[]> {
+    const qb = this.em.createQueryBuilder(Institution, 'e');
 
     const query = qb
       .select('*')
@@ -27,6 +26,6 @@ export class DataAccessImpl<T> implements DataAccess<T> {
       .leftJoin('es.subjects', 'ess')
       .where(where);
 
-    return await query.execute<T[]>();
+    return await query.execute<Institution[]>();
   }
 }
