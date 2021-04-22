@@ -12,6 +12,7 @@ export class AppController {
     return result;
   }
 
+  // @TODO this route can be in subject controller
   @Get('/subjects/:subject')
   public async getInstitutionsBySubject(
     @Param('subject') subject: string,

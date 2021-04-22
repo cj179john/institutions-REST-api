@@ -16,8 +16,6 @@ export class AppServiceImpl implements AppService {
   }
 
   public async findInstitutionBySubject(subject: string) {
-    return await this.dataAccessService.findBySubject({
-      subject,
-    });
+    return await this.dataAccessService.findBySubject(subject);
   }
 }
