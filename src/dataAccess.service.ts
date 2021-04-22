@@ -24,8 +24,8 @@ export class DataAccessImpl implements DataAccess {
       .select('i.name')
       .leftJoin('i.submissions', 's')
       .leftJoin('s.subjects', 's2')
-      .where('s2.name = ?', [where.subject])
-      .groupBy('i.name, s2.name');
+      .where('LOWER(s2.name) = LOWER(?)', [where.subject])
+      .groupBy('i.name');
 
     return await query.execute<Institution[]>();
   }
