@@ -12,7 +12,7 @@ import { Subject } from './Subject';
 @Entity({ tableName: 'submissions' })
 export class Submission {
   @PrimaryKey()
-  _id!: number;
+  primaryId!: number;
 
   @Property()
   id!: string;

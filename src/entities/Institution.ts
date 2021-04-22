@@ -4,17 +4,12 @@ import {
   OneToMany,
   PrimaryKey,
   Property,
-  Unique,
 } from '@mikro-orm/core';
 import { Submission } from './Submission';
 
 @Entity({ tableName: 'institutions' })
 export class Institution {
   @PrimaryKey()
-  _id!: number;
-
-  @Unique()
-  @Property()
   id!: string;
 
   @Property()
