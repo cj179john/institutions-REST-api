@@ -18,6 +18,6 @@ export class Subject {
   @Property()
   studentRating: number;
 
-  @ManyToOne(() => Submission, { nullable: true })
+  @ManyToOne(() => Submission)
   submission?: Submission;
 }

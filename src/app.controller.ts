@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
 import { AppServiceImpl } from './app.service';
 import { Institution } from './entities/Institution';
 
@@ -24,7 +24,19 @@ export class AppController {
   public async getInstitutionsBySubject(
     @Param('subject') subject: string,
   ): Promise<Institution[]> {
-    const result = this.appService.findInstitutionBySubject(subject);
+    const result = this.appService.findInstitutionsBySubject(subject);
+    return result;
+  }
+
+  @Get('/institutions/institution/subjects/:subject')
+  public async getInstitutionBySubject(
+    @Param('subject') subject: string,
+  ): Promise<Institution> {
+    const result = this.appService.findSingleInstitutionBySubject(subject);
+
+    if (!result) {
+      throw new NotFoundException();
+    }
     return result;
   }
 }

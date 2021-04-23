@@ -39,11 +39,11 @@ export class Submission {
   institutionIncome: number;
 
   @Property()
-  InstitutionId: string;
+  institutionId: string;
 
   @OneToMany(() => Subject, (subject) => subject.submission)
   subjects = new Collection<Subject>(this);
 
-  @ManyToOne(() => Institution, { nullable: true })
+  @ManyToOne(() => Institution)
   institution?: Institution;
 }

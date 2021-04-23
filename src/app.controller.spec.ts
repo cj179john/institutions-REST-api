@@ -7,10 +7,14 @@ describe('AppController', () => {
   let appController: AppController;
   let mockAppService: jest.Mock;
 
+  let findSingleInstitutionMock: jest.Mock;
+
   beforeEach(async () => {
+    findSingleInstitutionMock = jest.fn();
     mockAppService = jest.fn(() => ({
       findAllInstitutions: jest.fn().mockResolvedValue(fixtures),
-      findInstitutionBySubject: jest.fn().mockResolvedValue(fixtures),
+      findInstitutionsBySubject: jest.fn().mockResolvedValue(fixtures),
+      findSingleInstitutionBySubject: findSingleInstitutionMock,
     }));
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
@@ -34,12 +38,31 @@ describe('AppController', () => {
       expect(result).toEqual(fixtures);
     });
 
-    it('should return all institutions by subjects', async () => {
+    it('should return all institutions by subject', async () => {
       // Act
       const result = await appController.getInstitutionsBySubject('Biology');
 
       // Assert
       expect(result).toEqual(fixtures);
+    });
+
+    it('should return the highest rated institutions by subject', async () => {
+      // Assign
+      const institution = fixtures[0];
+      findSingleInstitutionMock.mockResolvedValue(institution);
+
+      // Act
+      const result = await appController.getInstitutionBySubject('Biology');
+
+      // Assert
+      expect(result).toEqual(institution);
+    });
+
+    it('should return not found error if no institution was found by subject', async () => {
+      // Act
+      await expect(
+        appController.getInstitutionBySubject('Biology'),
+      ).rejects.toThrow('Not Found');
     });
   });
 });

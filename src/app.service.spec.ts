@@ -49,7 +49,7 @@ describe('App Service', () => {
     findByMock.mockResolvedValue(findByFixtures);
 
     // Act
-    const results = await appService.findInstitutionBySubject('Biology');
+    const results = await appService.findInstitutionsBySubject('Biology');
 
     // Assert
     expect(findByMock).toBeCalled();

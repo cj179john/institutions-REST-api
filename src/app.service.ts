@@ -4,7 +4,8 @@ import { Institution } from './entities/Institution';
 
 export interface AppService {
   findAllInstitutions: () => Promise<Institution[]>;
-  findInstitutionBySubject: (subject: string) => Promise<Institution[]>;
+  findInstitutionsBySubject: (subject: string) => Promise<Institution[]>;
+  findSingleInstitutionBySubject: (subject: string) => Promise<Institution>;
 }
 
 @Injectable()
@@ -15,7 +16,11 @@ export class AppServiceImpl implements AppService {
     return await this.dataAccessService.findAll();
   }
 
-  public async findInstitutionBySubject(subject: string) {
+  public async findInstitutionsBySubject(subject: string) {
     return await this.dataAccessService.findBySubject(subject);
+  }
+
+  public async findSingleInstitutionBySubject(subject: string) {
+    return await this.dataAccessService.findOneBySubject(subject);
   }
 }
