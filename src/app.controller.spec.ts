@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import fixtures from '../test/fixtures/institutions';
+import submissionFixture from '../test/fixtures/submissions';
 import { AppController } from './app.controller';
 import { AppServiceImpl } from './app.service';
 
@@ -15,7 +16,9 @@ describe('AppController', () => {
       findAllInstitutions: jest.fn().mockResolvedValue(fixtures),
       findInstitutionsBySubject: jest.fn().mockResolvedValue(fixtures),
       findSingleInstitutionBySubject: findSingleInstitutionMock,
+      findSubmissions: jest.fn().mockResolvedValue(submissionFixture),
     }));
+
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
       providers: [
@@ -63,6 +66,16 @@ describe('AppController', () => {
       await expect(
         appController.getInstitutionBySubject('Biology'),
       ).rejects.toThrow('Not Found');
+    });
+  });
+
+  describe('Submission', () => {
+    it('should return submissions by year and institution', async () => {
+      // Act
+      const result = await appController.getSubmissionsOnInstitutions();
+
+      // Assert
+      expect(result).toEqual(submissionFixture);
     });
   });
 });

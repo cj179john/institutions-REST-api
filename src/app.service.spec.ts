@@ -1,5 +1,6 @@
 import { Test } from '@nestjs/testing';
 import fixtures from '../test/fixtures/institutions';
+import submissionFixtures from '../test/fixtures/submissions';
 import { AppService, AppServiceImpl } from './app.service';
 import { DataAccessImpl } from './dataAccess.service';
 
@@ -8,14 +9,17 @@ describe('App Service', () => {
   let findAllMock: jest.Mock;
   let findByMock: jest.Mock;
   let mockDataAccess: jest.Mock;
+  let findSubmissionsMock: jest.Mock;
 
   beforeEach(async () => {
     findAllMock = jest.fn();
     findByMock = jest.fn();
+    findSubmissionsMock = jest.fn();
 
     mockDataAccess = jest.fn(() => ({
       findAll: findAllMock,
       findBySubject: findByMock,
+      findSubmissionsPerInstitution: findSubmissionsMock,
     }));
 
     const module = await Test.createTestingModule({
@@ -54,5 +58,17 @@ describe('App Service', () => {
     // Assert
     expect(findByMock).toBeCalled();
     expect(results).toEqual(findByFixtures);
+  });
+
+  it('should find all submissions data group by year and institution', async () => {
+    // Assign
+    findSubmissionsMock.mockResolvedValue(submissionFixtures);
+
+    // Act
+    const results = await appService.findSubmissions();
+
+    // Assert
+    expect(findSubmissionsMock).toBeCalled();
+    expect(results).toEqual(submissionFixtures);
   });
 });

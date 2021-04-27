@@ -1,6 +1,7 @@
 import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
 import { AppServiceImpl } from './app.service';
 import { Institution } from './entities/Institution';
+import { Submission } from './entities/Submission';
 
 @Controller('/')
 export class AppController {
@@ -38,5 +39,10 @@ export class AppController {
       throw new NotFoundException();
     }
     return result;
+  }
+
+  @Get('/submissions')
+  public async getSubmissionsOnInstitutions(): Promise<Submission[]> {
+    return await this.appService.findSubmissions();
   }
 }
