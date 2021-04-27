@@ -1,6 +1,7 @@
 import { EntityManager } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
 import { Institution } from './entities/Institution';
+import { Submission } from './entities/Submission';
 
 export interface DataAccess {
   findAll(entity: string): Promise<Institution[]>;
@@ -27,7 +28,8 @@ export class DataAccessImpl implements DataAccess {
       .select('i.name')
       .leftJoin('i.submissions', 's')
       .leftJoin('s.subjects', 's2')
-      .where('LOWER(s2.name) = LOWER(?)', [subject]);
+      .where('LOWER(s2.name) = LOWER(?)', [subject])
+      .groupBy('i.name');
 
     return await query.execute<Institution[]>();
   }
@@ -47,5 +49,20 @@ export class DataAccessImpl implements DataAccess {
     const institutions = await query.execute<Institution>();
 
     return institutions[0] || null;
+  }
+
+  public async findSubmissionsPerInstitution(): Promise<Submission[]> {
+    const qb = this.em.createQueryBuilder(Submission, 's');
+
+    const query = qb
+      .select(
+        's.year, i.name, s.academicpapers, s.studenttotal, s.undergraduatestotal',
+      )
+      .join('s.institution', 'i')
+      .groupBy(
+        'i.name, s.academicpapers, s.studenttotal, s.undergraduatestotal, s.year',
+      );
+
+    return await query.execute<Submission[]>();
   }
 }
